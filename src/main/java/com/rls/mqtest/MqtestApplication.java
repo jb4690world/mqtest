@@ -29,8 +29,10 @@ public class MqtestApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
-		logger.info("EXECUTING : command line runner");
+		logger.info("EXECUTING : mqtest starting");
 		  
 	    thePublisher.publishMessage("Hello World");
+	    
+		logger.info("EXECUTING : mqtest completed");
 	}			
 }

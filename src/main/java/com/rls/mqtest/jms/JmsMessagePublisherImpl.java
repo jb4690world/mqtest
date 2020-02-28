@@ -14,9 +14,6 @@ public class JmsMessagePublisherImpl implements MessageCreator {
     private JmsTemplate template;
     private String poslogXml;
 
-    public JmsMessagePublisherImpl() {
-    	System.out.println("Im being constructed");
-    }
 	/**
 	 * defines the JmsTemplate to use when generating the messages on the queue
 	 * @param template

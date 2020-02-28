@@ -13,7 +13,7 @@
 	    <beans:property name="port" value="${IBM_MQ_PORT}" />
 	    <beans:property name="transportType" value="1" />
 	    <beans:property name="channel" value="${IBM_MQ_CHANNEL}" />
-	    <beans:property name="sSLCipherSuite" value="TLS_RSA_WITH_AES_256_CBC_SHA256" />	    
+	    <beans:property name="sSLCipherSuite" value="${IBM_MQ_CIPHER_SUITE}" />	    
 	</beans:bean>
 
 	<beans:bean id="wmqCachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">
