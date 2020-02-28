@@ -13,20 +13,20 @@ docker pull ibmcom/mq:latest
 
 We followed the instructions found here to test TLS on WebSphere MQ:
 
-```bash
-https://developer.ibm.com/messaging/learn-mq/mq-tutorials/secure-mq-tls/
-```
+[MQ with TLS  link](https://developer.ibm.com/messaging/learn-mq/mq-tutorials/secure-mq-tls/)
+
 We created a self signed certificate and added that to a keystore just like the instructions showed.
 
 The keystore password we created is:  changeme
 
 The uid/pwd for the DEV.APP.SVRCONN works out to app/MQ-TLS-TEST!
   
-You should be able to use the JAR build from this test
+You should be able to use the JAR build from this test withiout needing anything else.  You can download the JAR file we build from our [Google Drive here](https://drive.google.com/file/d/1YYPag629ORP5XgM0djVVjqnUw1Z4dYEl/view?usp=sharing).
+
 ## Cipher Suite
 We have successfully tested this app using the following Cipher Suite:
 
-TLS_RSA_WITH_AES_256_CBC_SHA256
+`TLS_RSA_WITH_AES_256_CBC_SHA256`
 
 Change the IBM_MQ_CIPHER_SUITE environment variable to use different Cipher Suites to test with
   
@@ -34,7 +34,7 @@ Change the IBM_MQ_CIPHER_SUITE environment variable to use different Cipher Suit
 
 To build the executable jar, run:
 
-mvn package -Dmaven.test.skip=true
+`mvn package -Dmaven.test.skip=true`
 
 We indicate to maven to skip the tests as it tries to bring up the Spring Context, which can fail if the MQ Connectivity is not correct
 
@@ -72,15 +72,23 @@ setenv IBM_MQ_CIPHER_SUITE=TLS_RSA_WITH_AES_256_CBC_SHA256
 
 ## Usage
 
+Steps to run:
+
+1. download the JAR file from our [Google Drive](https://drive.google.com/file/d/1YYPag629ORP5XgM0djVVjqnUw1Z4dYEl/view?usp=sharing) if you do not want to build it yourself.
+2. setup the appropriate environment variables
+3. run the command as described below (note: you will need to alter the locations and passwords for your environment)
+
 The mqtest application is built as a "runnable" jar.
 
 To run the app on our system we used the following command:
 
 ```bash
-java -Dspring.profiles.active=prod  -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=/Users/jboyle/Downloads/albertsons/mqtest/cert/clientkey.jks -Djavax.net.ssl.trustStorePassword=changeme -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -jar target/mqtest-0.0.1-SNAPSHOT.jar
+java -Dspring.profiles.active=prod  -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=/Users/jboyle/Downloads/albertsons/mqtest/cert/clientkey.jks -Djavax.net.ssl.trustStorePassword=changeme -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -jar mqtest-0.0.1-SNAPSHOT.jar
 ```
 
-Note: for our testing we use the dev profile:  -Dspring.profiles.active=prod
+
+* ** Note: you will need to alter the settings for trustStore and trustStorePassword to correspond to your environment **
+*  Note: for our testing we use the dev profile:  -Dspring.profiles.active=prod 
 
 ## Sample Output
 
