@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	profile="prod">
+
+
+	<beans:bean id="wmqConnectionFactory" class="com.ibm.mq.jms.MQConnectionFactory" scope="singleton">
+	    <beans:property name="queueManager" value="${IBM_MQ_QUEUEMANAGER}" />
+	    <beans:property name="hostName" value="${IBM_MQ_HOSTNAME}" />
+	    <beans:property name="port" value="${IBM_MQ_PORT}" />
+	    <beans:property name="transportType" value="1" />
+	    <beans:property name="channel" value="${IBM_MQ_CHANNEL}" />
+	    <beans:property name="sSLCipherSuite" value="TLS_RSA_WITH_AES_256_CBC_SHA256" />	    
+	</beans:bean>
+
+	<beans:bean id="wmqCachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">
+	    <beans:property name="targetConnectionFactory" ref="wmqConnectionFactory"/>
+	    <beans:property name="cacheConsumers" value="false" />
+	    <beans:property name="cacheProducers" value="true" />
+	    <beans:property name="sessionCacheSize" value="${IBM_MQ_SESSION_CACHE_SIZE}" />
+	</beans:bean>
+
+	<beans:bean id="wmqJmsTemplate" class="org.springframework.jms.core.JmsTemplate" scope="singleton">
+	    <beans:property name="connectionFactory" ref="wmqCachingConnectionFactory" />
+	    <beans:property name="defaultDestinationName" value="${IBM_MQ_QUEUENAME}" />
+	    <beans:property name="pubSubDomain" value="false" />
+	</beans:bean>
+
+	 <beans:bean name="wmqPublisher" id="wmqPublisher" class="com.rls.mqtest.jms.JmsMessagePublisherImpl" scope="prototype">
+        <beans:property name="template" ref="wmqJmsTemplate" />
+    </beans:bean>
+
+</beans:beans>
