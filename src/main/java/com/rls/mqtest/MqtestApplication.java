@@ -17,6 +17,9 @@ public class MqtestApplication implements CommandLineRunner{
 	private static Logger logger = LoggerFactory.getLogger(MqtestApplication.class);
 
 	@Autowired
+	BasePosFileDataPublisher publisher;
+	
+	@Autowired
 	JmsMessagePublisherImpl thePublisher;
 	
 	public static void main(String[] args) {
@@ -32,6 +35,8 @@ public class MqtestApplication implements CommandLineRunner{
 		logger.info("EXECUTING : mqtest starting");
 		  
 	    thePublisher.publishMessage("Hello World");
+	    
+	    publisher.setFileid(args[1]);
 	    
 		logger.info("EXECUTING : mqtest completed");
 	}			
